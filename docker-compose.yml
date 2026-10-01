@@ -21,6 +21,9 @@ services:
       APP_NAME: ${APP_NAME}
       ENVIRONMENT: ${ENVIRONMENT}
       SECRET_KEY: ${SECRET_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+      AGENT_RATE_LIMIT_PER_MINUTE: ${AGENT_RATE_LIMIT_PER_MINUTE:-30}
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
