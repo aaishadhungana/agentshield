@@ -17,6 +17,7 @@ def list_events(
     current_user: CurrentUser,
     decision: Decision | None = None,
     agent_id: uuid.UUID | None = None,
+    min_risk_score: int | None = Query(default=None, ge=0, le=100),
     limit: int = Query(default=50, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
 ):
@@ -27,6 +28,8 @@ def list_events(
         query = query.where(AuditEvent.decision == decision.value)
     if agent_id is not None:
         query = query.where(AuditEvent.agent_id == agent_id)
+    if min_risk_score is not None:
+        query = query.where(AuditEvent.risk_score >= min_risk_score)
     query = query.order_by(AuditEvent.created_at.desc()).limit(limit).offset(offset)
     return db.scalars(query).all()
 
